@@ -70,7 +70,7 @@ const gameboard = () => {
                 const yOrigin = yAxis.indexOf(yAxisChoice)
                 let shipYCoordinateArr = (yAxis.slice(yOrigin, yOrigin + ship.length - 2))
 
-                if (ship.length + yOrigin > 9)
+                if (ship.length + yOrigin > 12)
                 {return console.log('invalid option, ship out of bounds')}
 
                 for (const element of shipYCoordinateArr) {                    
@@ -87,7 +87,7 @@ const gameboard = () => {
                 const xOrigin = xAxis.indexOf(xAxisChoice)
                 let shipXCoordinateArr = (xAxis.slice(xOrigin, xOrigin + ship.length - 2))
 
-                if (ship.length + xOrigin > 9)
+                if (ship.length + xOrigin > 12)
                 {return console.log('invalid option, ship out of bounds')}
 
                 for (const element of shipXCoordinateArr) {
@@ -114,8 +114,8 @@ return {xAxis, yAxis, missed, receiveAttack, placeShip}
 
 const player1Gameboard = gameboard()
 
-const cruiser = player1Gameboard.placeShip(3, 'cruiser', 3, 'j', 'vertical')
-const destroyer = player1Gameboard.placeShip(3, 'destroyer', 9, 'a', 'horizontal')
+const cruiser = player1Gameboard.placeShip(3, 'cruiser', 1, 'i', 'vertical')
+const destroyer = player1Gameboard.placeShip(3, 'destroyer', 9, 'c', 'horizontal')
 
 console.log(cruiser)
 console.log(destroyer)
