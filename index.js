@@ -70,14 +70,14 @@ const gameboard = () => {
                 const yOrigin = yAxis.indexOf(yAxisChoice)
                 let shipYCoordinateArr = (yAxis.slice(yOrigin, yOrigin + ship.length - 2))
 
-                for (const element of shipYCoordinateArr) {
-                    // if (shipCoordinateList.includes([xAxisChoice, element]))
-                    //     {return console.log('invalid placement')}
-                    
+                if (ship.length + yOrigin > 9)
+                {return console.log('invalid option, ship out of bounds')}
+
+                for (const element of shipYCoordinateArr) {                    
                     for (let i = 0; i < shipCoordinateList.length; i++)
                     {let choice = [xAxisChoice, element]
                         if(shipCoordinateList[i] == choice.toString())
-                    {return console.log('invalid option')}}
+                    {return console.log('invalid option theres already a ship there')}}
 
                     shipName.coordinates.push([xAxisChoice, element])
                     shipCoordinateList.push([xAxisChoice, element])
@@ -86,12 +86,16 @@ const gameboard = () => {
             } else if (orientation === 'horizontal')    {
                 const xOrigin = xAxis.indexOf(xAxisChoice)
                 let shipXCoordinateArr = (xAxis.slice(xOrigin, xOrigin + ship.length - 2))
+
+                if (ship.length + xOrigin > 9)
+                {return console.log('invalid option, ship out of bounds')}
+
                 for (const element of shipXCoordinateArr) {
                     
                     for (let i = 0; i < shipCoordinateList.length; i++)
                     {let choice = [element, yAxisChoice]
                         if(shipCoordinateList[i] == choice.toString())
-                    {return console.log('invalid option')}}
+                    {return console.log('invalid option theres already a ship there')}}
                     
                     shipName.coordinates.push([element, yAxisChoice])
                     shipCoordinateList.push([element, yAxisChoice])
@@ -110,8 +114,8 @@ return {xAxis, yAxis, missed, receiveAttack, placeShip}
 
 const player1Gameboard = gameboard()
 
-const cruiser = player1Gameboard.placeShip(3, 'cruiser', 3, 'a', 'vertical')
-const destroyer = player1Gameboard.placeShip(3, 'destroyer', 3, 'a', 'horizontal')
+const cruiser = player1Gameboard.placeShip(3, 'cruiser', 3, 'j', 'vertical')
+const destroyer = player1Gameboard.placeShip(3, 'destroyer', 9, 'a', 'horizontal')
 
 console.log(cruiser)
 console.log(destroyer)
