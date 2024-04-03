@@ -1,3 +1,5 @@
+const messageBoard = document.getElementById('messageBoard')
+
 const ship = (shipName, length, hitCount, sunkStatus, coordinates) => {
     const newShip = {
         shipName,
@@ -49,11 +51,9 @@ const gameboard = () => {
         shipName = ship(shipName, length, 0, false, [], orientation)
                         
         // console.log(shipName.length)
-        console.log(yAxisChoice)
+        // console.log(yAxisChoice)
 
         //checks if ship clips is within the grid
-
-
 
 
         if (orientation === 'vertical') {
@@ -62,7 +62,7 @@ const gameboard = () => {
 
                 //checks if ship is out of bounds
                 if (shipName.length + yOrigin > 10)
-                {return console.log(`invalid option ship is out of bounds, place the ${shipName.shipName} somewhere else`)}
+                {return}
 
                 // if  (shipName.length + yAxisChoice > 10)
                 // {return console.log('out of grid')}
@@ -72,7 +72,7 @@ const gameboard = () => {
                     for (let i = 0; i < shipCoordinateList.length; i++)
                     {let choice = [xAxisChoice, element]
                         if(shipCoordinateList[i] == choice.toString())
-                    {return console.log(`invalid option theres already a ship there, place the ${shipName.shipName} somewhere else`)}}
+                    {return}}
 
                     shipName.coordinates.push([xAxisChoice, element])
                     shipCoordinateList.push([xAxisChoice, element])
@@ -82,12 +82,16 @@ const gameboard = () => {
                 const xOrigin = xAxis.indexOf(xAxisChoice)
                 let shipXCoordinateArr = (xAxis.slice(xOrigin, xOrigin + shipName.length))
 
-                //check if ship is out of bounds
-                if (shipName.length + xAxisChoice > 11) {
-                    return console.log(`invalid option ship is out of bounds, place the ${shipName.shipName} somewhere else`)}
+                // if (shipXCoordinateArr.includes(yAxis[0], yAxis[1]))
+                // {return}
 
+                //checks if ship clips through grid
+                if (shipName.length + xAxisChoice > 11) 
+                {return}
+
+                //check if ship is out of bounds
                 if (shipName.length + xOrigin > 12)
-                {return console.log(`invalid option ship is out of bounds, place the ${shipName.shipName} somewhere else`)}
+                {return}
 
                 
                 //check if coordinates are occupied by another ship
@@ -95,7 +99,7 @@ const gameboard = () => {
                     for (let i = 0; i < shipCoordinateList.length; i++)
                     {let choice = [element, yAxisChoice]
                         if(shipCoordinateList[i] == choice.toString())
-                    {return console.log(`invalid option theres already a ship there, place the ${shipName.shipName} somewhere else`)}}
+                    {return}}
                     
                     shipName.coordinates.push([element, yAxisChoice])
                     shipCoordinateList.push([element, yAxisChoice])                   
@@ -106,7 +110,7 @@ const gameboard = () => {
         return shipName
     }
 
-return {xAxis, yAxis, missed, receiveAttack, placeShip, activeShipList, gameOverCheck}
+return {xAxis, yAxis, missed, receiveAttack, placeShip, activeShipList, gameOverCheck, shipCoordinateList}
 }
 
 const cpuGameboard = gameboard()
@@ -126,7 +130,6 @@ const submarine = {shipObjectLength: 3, shipObjectName: 'submarine'}
 const destroyer = {shipObjectLength: 2, shipObjectName: 'destroyer'}
 const ssConflict = (3, 'ssConflict')
 
-console.log(carrier)
 
 const ships = [
     battleship,
@@ -155,6 +158,7 @@ referee()
 // export {player1Gameboard}
 // export {boat}
 // export {cruiser}
+
 
 export {player1Gameboard}
 export {ships}

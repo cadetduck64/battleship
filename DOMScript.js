@@ -14,6 +14,7 @@ let mouseClickVariable
 let DOMorientation = 'horizontal'
 let currentShipLength
 let currentShipName
+let DOMCoordinates
 // placeShipModal.style.visbility = false
 
 const gameboardDom = () => {
@@ -85,20 +86,20 @@ const gameboardDom = () => {
                 battlefieldSquare.addEventListener('click', () => {
                     if(currentShipName === undefined)
                     {return console.log('Pick a ship first, Commander')}
-                    
-
-                    const DOMconflictCheck = document.getElementsByClassName('deployedShip')
-                    console.log(DOMconflictCheck)
-                    // array.forEach(element => {
-                        
-                    // });
 
                     console.log(Number(mouseHoverVariable.id))
                     mouseClickVariable = Number(mouseHoverVariable.id)
 
-                    // cannot place ships after Id 80
-                    console.log(DOMxAxis[mouseHoverVariable.id[1]], DOMyAxis[mouseHoverVariable.id[0]])
-                    
+                    // const DOMcollisionCheck = document.getElementsByClassName('deployedShip battlefieldSquareHighlight')
+                    // const DOMcollisionCheckBlack = document.getElementsByClassName('deployedShip battlefieldSquareSelect')
+
+                    // if(DOMcollisionCheck.length !== 0 || DOMcollisionCheckBlack.length !== 0)
+                    // {return}
+
+                    if(player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[1]], DOMyAxis[mouseHoverVariable.id[0]], DOMorientation) === undefined)
+                    {return}
+
+                    // cannot place ships after Id 80                    
                     if (mouseHoverVariable.id[1] === undefined) {
                         console.log(DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0])
                         player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0], DOMorientation)
@@ -175,8 +176,6 @@ const gameboardDom = () => {
 
         }
         renderShipSummaries()
-        console.log(player1Gameboard.activeShipList)
-
 }
 
     placeShipDom()
