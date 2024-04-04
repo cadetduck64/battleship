@@ -90,18 +90,17 @@ const gameboardDom = () => {
                     console.log(Number(mouseHoverVariable.id))
                     mouseClickVariable = Number(mouseHoverVariable.id)
 
-                    // const DOMcollisionCheck = document.getElementsByClassName('deployedShip battlefieldSquareHighlight')
-                    // const DOMcollisionCheckBlack = document.getElementsByClassName('deployedShip battlefieldSquareSelect')
-
-                    // if(DOMcollisionCheck.length !== 0 || DOMcollisionCheckBlack.length !== 0)
-                    // {return}
-
-                    if(player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[1]], DOMyAxis[mouseHoverVariable.id[0]], DOMorientation) === undefined)
+                    //checks valid placement
+                    if (mouseHoverVariable.id[1] === undefined)
+                    {if (player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0], DOMorientation) === undefined)
+                        {return}}
+                    else if (player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[1]], DOMyAxis[mouseHoverVariable.id[0]], DOMorientation) === undefined)
                     {return}
-
-                    // cannot place ships after Id 80                    
+ 
+                    // fix bug where a line can clip to second row
                     if (mouseHoverVariable.id[1] === undefined) {
-                        console.log(DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0])
+                        console.log(mouseHoverVariable.id[1])
+                        // console.log(DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0])
                         player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0], DOMorientation)
                     } else {
                         player1Gameboard.placeShip(currentShipLength, currentShipName, DOMxAxis[mouseHoverVariable.id[1]], DOMyAxis[mouseHoverVariable.id[0]], DOMorientation)
@@ -117,6 +116,11 @@ const gameboardDom = () => {
                         document.getElementById(Number(mouseHoverVariable.id) + 10 * i).classList.add('deployedShip')
                         mouseHoverVariable.classList.add('deployedShip')
                     }
+                    
+                    const clear = document.querySelector('#shipSummaryHighlight')
+                    clear.remove()
+                    currentShipName = undefined
+                    currentShipLength = undefined
 
                     console.log(player1Gameboard.activeShipList)
                 })
@@ -150,6 +154,8 @@ const gameboardDom = () => {
                 const shipSummary = document.createElement('div')
                 shipSummary.textContent = shipName + ' || length: ' + length
                 shipSummary.classList.add('shipSummary')
+                shipSummary.setAttribute('id', shipName)
+
 
                 // shipSummary.addEventListener('contextmenu', (e) => {e.preventDefault(), console.log('right')})
 
@@ -163,6 +169,7 @@ const gameboardDom = () => {
                     if(removehightlight != undefined || removehightlight != null)
                     {removehightlight.removeAttribute('id')}
                     shipSummary.setAttribute('id', 'shipSummaryHighlight')
+                    
                 })
                 shipListDiv.appendChild(shipSummary)
             }

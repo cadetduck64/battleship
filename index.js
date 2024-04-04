@@ -54,6 +54,7 @@ const gameboard = () => {
         // console.log(yAxisChoice)
 
         //checks if ship clips is within the grid
+        console.log(yAxisChoice)
 
 
         if (orientation === 'vertical') {
@@ -82,8 +83,12 @@ const gameboard = () => {
                 const xOrigin = xAxis.indexOf(xAxisChoice)
                 let shipXCoordinateArr = (xAxis.slice(xOrigin, xOrigin + shipName.length))
 
-                // if (shipXCoordinateArr.includes(yAxis[0], yAxis[1]))
-                // {return}
+                // console.log(shipName.length + xOrigin)
+                // console.log(yAxisChoice)
+
+
+                if (yAxisChoice === 'a' && shipName.length + xOrigin > 10)
+                {return console.log('asdf')}
 
                 //checks if ship clips through grid
                 if (shipName.length + xAxisChoice > 11) 
