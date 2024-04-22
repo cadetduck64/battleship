@@ -1,3 +1,13 @@
+#window {
+    display: flex;
+    flex-direction: row;
+}
+
+#divider {
+    width: 80px;
+}
+
+/* Player Style */
 .battlefieldSquare {
     background-color: white;
     width: 40px;
@@ -55,7 +65,6 @@
     grid-template-areas: 
     " . xAxisDiv"
     "yAxisDiv playField";
-    width: 330px;
 }
 
 .shipSummary {
@@ -91,5 +100,116 @@
 }
 
 .deployedShip {
+    background-color: purple;
+}
+
+/* Bot Style */
+
+#window {
+    display: flex;
+    flex-direction: row;
+}
+
+.botbattlefieldSquare {
+    background-color: white;
+    width: 40px;
+    height: 40px;
+    border: solid black;
+    align-content: center;
+}
+
+#botxAxisDiv {
+    display: grid;
+    grid-template-columns: repeat(10, 40px);
+    grid-area: botxAxisDiv;
+}
+
+.botxAxisSquare {
+    width: 40px;
+    height: 40px;
+    color: red;
+    border: solid black;
+}
+
+
+#botyAxisDiv {
+    display: grid;
+    grid-template-rows: repeat(10, 40px);
+    justify-self: flex-end;
+    grid-area: botyAxisDiv;
+}
+
+.botyAxisSquare{
+    width: 40px;
+    height: 40px;
+    color: red;
+    border: solid black;
+}
+
+.botplayField {
+    /* border: solid black; */
+    display: grid;
+    grid-template-rows: repeat(10, 40px);
+    grid-template-columns: repeat(10, 40px);
+    flex-wrap: wrap;
+    flex-direction: row;
+    color: aqua;
+    grid-area: botplayField;
+}
+
+.botshipList {
+    border: solid black;
+
+}
+
+#botplayFieldContainer {
+    display: grid;
+    grid-template-areas: 
+    " . botxAxisDiv"
+    "botyAxisDiv botplayField";
+    width: 330px;
+}
+
+.botshipSummary {
+    border: solid black;
+}
+
+#botplaceShipModal {
+    display: flex;
+    visibility: hidden;
+    flex-direction: column;
+    border: solid black;
+}
+
+#botshipSummaryHighlight {
+    background-color: purple;
+}
+
+.botbattlefieldSquareSelect    {
+    background-color: black;
+
+}
+
+.botbattlefieldSquareHighlight {
+    background-color: blue;
+}
+
+.botbattlefieldSquareHitShip {
+    background-color: red;
+}
+
+.botbattlefieldSquareMissedShip {
+    background-color: green
+}
+
+#botContainer {
+    width: 400px;
+}
+
+#botmessageBoard {
+    border: solid black;
+}
+
+.botdeployedShip {
     background-color: purple;
 }
