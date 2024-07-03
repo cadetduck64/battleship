@@ -1,3 +1,6 @@
+//program AI counterattack
+//program random AI placement
+//clean up UI
 import {player1Gameboard} from "/index.js"
 import {botGameboard } from "/index.js"
 import {ships} from "/index.js"
@@ -306,9 +309,11 @@ const DOMbotGameboard = () => {
                     }
                     botGameboard.receiveAttack(undefined, botHitAttempt)
                     botGameboard.gameOverCheck()
-                    
+
                     if (mouseHoverVariable.classList.contains('.botbattlefieldSquareHitShip') === false)
                     {mouseHoverVariable.classList.add('botbattlefieldSquareMissedShip')}
+
+                    player1Gameboard.receiveAttack()
                     
                     
                 })
