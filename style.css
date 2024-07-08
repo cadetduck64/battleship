@@ -4,6 +4,7 @@
 }
 
 #divider {
+    border: solid black;
     width: 80px;
 }
 
@@ -92,6 +93,7 @@
 }
 
 #playerContainer {
+    margin-right: 100px;
     width: 400px;
 }
 
