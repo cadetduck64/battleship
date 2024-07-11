@@ -1,217 +1,215 @@
 #window {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 #divider {
-    border: solid black;
-    width: 80px;
+  border: solid black;
+  width: 80px;
 }
 
 /* Player Style */
 .battlefieldSquare {
-    background-color: white;
-    width: 40px;
-    height: 40px;
-    border: solid black;
-    align-content: center;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border: solid black;
+  align-content: center;
 }
 
 #xAxisDiv {
-    display: grid;
-    grid-template-columns: repeat(10, 40px);
-    grid-area: xAxisDiv;
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-area: xAxisDiv;
 }
 
 .xAxisSquare {
-    width: 40px;
-    height: 40px;
-    color: red;
-    border: solid black;
+  width: 40px;
+  height: 40px;
+  color: red;
+  border: solid black;
 }
-
 
 #yAxisDiv {
-    display: grid;
-    grid-template-rows: repeat(10, 40px);
-    justify-self: flex-end;
-    grid-area: yAxisDiv;
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  justify-self: flex-end;
+  grid-area: yAxisDiv;
 }
 
-.yAxisSquare{
-    width: 40px;
-    height: 40px;
-    color: red;
-    border: solid black;
+.yAxisSquare {
+  width: 40px;
+  height: 40px;
+  color: red;
+  border: solid black;
 }
 
 .playField {
-    /* border: solid black; */
-    display: grid;
-    grid-template-rows: repeat(10, 40px);
-    grid-template-columns: repeat(10, 40px);
-    flex-wrap: wrap;
-    flex-direction: row;
-    color: aqua;
-    grid-area: playField;
+  /* border: solid black; */
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: repeat(10, 40px);
+  flex-wrap: wrap;
+  flex-direction: row;
+  color: aqua;
+  grid-area: playField;
 }
 
 .shipList {
-    border: solid black;
-
+  border: solid black;
 }
 
 #playFieldContainer {
-    display: grid;
-    grid-template-areas: 
+  display: grid;
+  grid-template-areas:
     " . xAxisDiv"
     "yAxisDiv playField";
 }
 
 .shipSummary {
-    border: solid black;
+  border: solid black;
 }
 
 #placeShipModal {
-    display: flex;
-    visibility: hidden;
-    flex-direction: column;
-    border: solid black;
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  border: solid black;
 }
 
 #shipSummaryHighlight {
-    background-color: purple;
+  background-color: purple;
 }
 
-.battlefieldSquareSelect    {
-    background-color: black;
-
+.battlefieldSquareSelect {
+  background-color: black;
 }
 
 .battlefieldSquareHighlight {
-    background-color: blue;
+  background-color: blue;
 }
 
 #playerContainer {
-    margin-right: 100px;
-    width: 400px;
+  margin-right: 100px;
+  width: 400px;
 }
 
 #messageBoard {
-    border: solid black;
+  border: solid black;
+}
+
+.messageBoard {
+  border: solid black;
 }
 
 .deployedShip {
-    background-color: purple;
+  background-color: purple;
 }
 
 /* Bot Style */
 
 #window {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .botbattlefieldSquare {
-    background-color: white;
-    width: 40px;
-    height: 40px;
-    border: solid black;
-    align-content: center;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border: solid black;
+  align-content: center;
 }
 
 #botxAxisDiv {
-    display: grid;
-    grid-template-columns: repeat(10, 40px);
-    grid-area: botxAxisDiv;
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-area: botxAxisDiv;
 }
 
 .botxAxisSquare {
-    width: 40px;
-    height: 40px;
-    color: red;
-    border: solid black;
+  width: 40px;
+  height: 40px;
+  color: red;
+  border: solid black;
 }
-
 
 #botyAxisDiv {
-    display: grid;
-    grid-template-rows: repeat(10, 40px);
-    justify-self: flex-end;
-    grid-area: botyAxisDiv;
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  justify-self: flex-end;
+  grid-area: botyAxisDiv;
 }
 
-.botyAxisSquare{
-    width: 40px;
-    height: 40px;
-    color: red;
-    border: solid black;
+.botyAxisSquare {
+  width: 40px;
+  height: 40px;
+  color: red;
+  border: solid black;
 }
 
 .botplayField {
-    /* border: solid black; */
-    display: grid;
-    grid-template-rows: repeat(10, 40px);
-    grid-template-columns: repeat(10, 40px);
-    flex-wrap: wrap;
-    flex-direction: row;
-    color: aqua;
-    grid-area: botplayField;
+  /* border: solid black; */
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: repeat(10, 40px);
+  flex-wrap: wrap;
+  flex-direction: row;
+  color: aqua;
+  grid-area: botplayField;
 }
 
 .botshipList {
-    border: solid black;
-
+  border: solid black;
 }
 
 #botplayFieldContainer {
-    display: grid;
-    grid-template-areas: 
+  display: grid;
+  grid-template-areas:
     " . botxAxisDiv"
     "botyAxisDiv botplayField";
-    width: 330px;
+  width: 330px;
 }
 
 .botshipSummary {
-    border: solid black;
+  border: solid black;
 }
 
 #botplaceShipModal {
-    display: flex;
-    visibility: hidden;
-    flex-direction: column;
-    border: solid black;
+  display: flex;
+  visibility: hidden;
+  flex-direction: column;
+  border: solid black;
 }
 
 #botshipSummaryHighlight {
-    background-color: purple;
+  background-color: purple;
 }
 
-.botbattlefieldSquareSelect    {
-    background-color: black;
-
+.botbattlefieldSquareSelect {
+  background-color: black;
 }
 
 .botbattlefieldSquareHighlight {
-    background-color: blue;
+  background-color: blue;
 }
 
 .botbattlefieldSquareHitShip {
-    background-color: red;
+  background-color: red;
 }
 
 .botbattlefieldSquareMissedShip {
-    background-color: green
+  background-color: green;
 }
 
 #botContainer {
-    width: 400px;
+  width: 400px;
 }
 
 #botmessageBoard {
-    border: solid black;
+  border: solid black;
 }
 
 .botdeployedShip {
-    background-color: purple;
+  background-color: purple;
 }

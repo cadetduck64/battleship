@@ -7,12 +7,14 @@ import { player1Gameboard } from "/index.js";
 import { botGameboard } from "/index.js";
 import { ships } from "/index.js";
 import { referee } from "/index.js";
-// import { botFunction } from "/index.js";
 import { botOperation } from "./index.js";
+import { resetGame } from "./index.js";
 
-console.log(ships);
+// console.log(ships);
 
 //player used variables
+const messageBoard = document.querySelector("#messageBoard");
+const resetButton = document.querySelector("#resetButton");
 const playFieldContainer = document.querySelector("#playFieldContainer");
 const playField = document.querySelector("#playField");
 const xAxisDiv = document.querySelector("#xAxisDiv");
@@ -124,7 +126,10 @@ const gameboardPlayer1Dom = () => {
         if (player1Gameboard.activeShipList.length === ships.length) {
           return console.log("you cant fire on your own ships");
         } else if (currentShipName === undefined) {
-          return console.log("Pick a ship first, Commander");
+          return (
+            console.log("Pick a ship first, Commander"),
+            (messageBoard.textContent = "Pick a ship first, Commander")
+          );
         }
 
         // console.log(Number(mouseHoverVariable.id))
@@ -219,50 +224,52 @@ const gameboardPlayer1Dom = () => {
     }
   };
 
-  const placeShipDom = () => {
-    const renderShipSummaries = () => {
-      const shipSummaryFactory = (length, shipName) => {
-        const shipSummary = document.createElement("div");
-        shipSummary.textContent = shipName + " || length: " + length;
-        shipSummary.classList.add("shipSummary");
-        shipSummary.setAttribute("id", shipName);
+  //placeShipDom used to be here
 
-        // shipSummary.addEventListener('contextmenu', (e) => {e.preventDefault(), console.log('right')})
-
-        shipSummary.addEventListener("click", () => {
-          currentShipLength = length;
-          currentShipName = shipName;
-          console.log("currentShipLength " + currentShipLength);
-          console.log("currentShipName " + currentShipName);
-
-          const removehightlight = document.getElementById(
-            "shipSummaryHighlight"
-          );
-          if (removehightlight != undefined || removehightlight != null) {
-            removehightlight.removeAttribute("id");
-          }
-          shipSummary.setAttribute("id", "shipSummaryHighlight");
-        });
-        shipListDiv.appendChild(shipSummary);
-      };
-
-      ships.forEach((element) => {
-        shipSummaryFactory(element.shipObjectLength, element.shipObjectName);
-      });
-      // const cruiserSummary = shipSummaryFactory(3, 'cruiser')
-      // const battleshipSummary = shipSummaryFactory(4, 'battleship')
-      // const carrier = shipSummaryFactory(5, 'carrier')
-    };
-    renderShipSummaries();
-  };
-
-  placeShipDom();
+  // placeShipDom();
   renderxAxis();
   renderyAxis();
   renderPlayfield();
+
+  // return {placeShipDom}
 };
 
 gameboardPlayer1Dom();
+
+const placeShipDom = () => {
+  const shipSummaryFactory = (length, shipName) => {
+    const shipSummary = document.createElement("div");
+    shipSummary.textContent = shipName + " || length: " + length;
+    shipSummary.classList.add("shipSummary");
+    shipSummary.setAttribute("id", shipName);
+
+    // shipSummary.addEventListener('contextmenu', (e) => {e.preventDefault(), console.log('right')})
+
+    shipSummary.addEventListener("click", () => {
+      currentShipLength = length;
+      currentShipName = shipName;
+      console.log("currentShipLength " + currentShipLength);
+      console.log("currentShipName " + currentShipName);
+
+      const removehightlight = document.getElementById("shipSummaryHighlight");
+      if (removehightlight != undefined || removehightlight != null) {
+        removehightlight.removeAttribute("id");
+      }
+      shipSummary.setAttribute("id", "shipSummaryHighlight");
+    });
+    shipListDiv.appendChild(shipSummary);
+  };
+
+  //activates the above function for as many ships are playable
+  ships.forEach((element) => {
+    shipSummaryFactory(element.shipObjectLength, element.shipObjectName);
+  });
+  // const cruiserSummary = shipSummaryFactory(3, 'cruiser')
+  // const battleshipSummary = shipSummaryFactory(4, 'battleship')
+  // const carrier = shipSummaryFactory(5, 'carrier')
+};
+
+placeShipDom();
 
 //renders CPU/player 2 gameboard
 
@@ -354,9 +361,27 @@ const DOMbotGameboard = () => {
 
       botbattlefieldSquare.addEventListener("click", () => {
         //DEBUG: uncomment this to prevent bot from not attacking
-        if (player1Gameboard.activeShipList.length < ships.length) {
+        if (
+          document.querySelector('#shipListDiv').children.length > 0
+        ) {
+          return console.log(
+            "Place all ships before launching attacks, Commander",
+            messageBoard.textContent = "Place all ships before launching attacks, Commander"
+          );
+        }
+
+        let playerAttackAttempt = [
+          botDOMxAxis[mouseHoverVariable.id[1]],
+          botDOMyAxis[mouseHoverVariable.id[0]],
+        ];
+
+        //checks to see if the space has already been interacted with and if so, stops the function
+        if (botbattlefieldSquare.classList.contains('botbattlefieldSquareMissedShip') ||
+        botbattlefieldSquare.classList.contains('botbattlefieldSquareHitShip')
+      ) {
+          messageBoard.textContent = 'space already hit'
+          console.log('space already hit')
           return;
-          console.log("Place all ships before launching attacks, Commander");
         }
 
         //checks to see if game is over
@@ -378,14 +403,11 @@ const DOMbotGameboard = () => {
           ];
         }
 
-        console.log(botOperation.botAvailableAttacks.length);
-        console.log(botAttackAttempt);
-        console.log(botOperation.botAvailableAttacks);
+        // console.log(botOperation.botAvailableAttacks.length);
+        // console.log(botAttackAttempt);
+        // console.log(botOperation.botAvailableAttacks);
 
-        let playerAttackAttempt = [
-          botDOMxAxis[mouseHoverVariable.id[1]],
-          botDOMyAxis[mouseHoverVariable.id[0]],
-        ];
+
 
         //formatting so player attacks responds to first column
         if (playerAttackAttempt[0] === undefined) {
@@ -448,6 +470,32 @@ const DOMbotGameboard = () => {
 };
 
 DOMbotGameboard();
+
+resetButton.addEventListener("click", () => {
+  resetGame();
+  //resets board squares and player description
+  const shipSummaries = document.querySelectorAll(".shipSummary");
+  for (let index = 0; index < shipSummaries.length; index++) {
+    shipSummaries[index].remove();
+  }
+  const missedSquares = document.querySelectorAll(
+    ".botbattlefieldSquareMissedShip"
+  );
+  const hitSquares = document.querySelectorAll(".botbattlefieldSquareHitShip");
+  const placedShips = document.querySelectorAll(".deployedShip");
+
+  for (let i = 0; i < missedSquares.length; i++) {
+    missedSquares[i].classList.remove("botbattlefieldSquareMissedShip");
+  }
+  for (let i = 0; i < hitSquares.length; i++) {
+    hitSquares[i].classList.remove("botbattlefieldSquareHitShip");
+  }
+  for (let i = 0; i < placedShips.length; i++) {
+    placedShips[i].classList.remove("deployedShip");
+  }
+
+  placeShipDom();
+});
 
 // console.log(botGameboard)
 // console.log((botGameboard.activeShipList[0], [2, 'a']))

@@ -1,9 +1,11 @@
+//prevent duplicate attacks
+
 export { player1Gameboard };
 export { botGameboard };
 export { ships };
 export { referee };
-// export { botFunction };
 export { botOperation };
+export { resetGame };
 
 const messageBoard = document.getElementById("messageBoard");
 
@@ -37,28 +39,32 @@ const gameboard = () => {
   const shipCoordinateList = [];
   const xAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const yAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-  const missed = [];
+  const previouslySelected = [];
   const activeShipList = [];
   const gameOverCheck = () => {
     console.log("GAMEOVER CHECK");
     console.log(activeShipList);
     console.log(activeShipList.length);
 
-    if (activeShipList.length === 0) {
-      console.log("(console.log()), You Lose");
-      return true;
-    }
     activeShipList.forEach((element) => {
       if (element.sunkStatus === true) {
         let newSunkShip = activeShipList.indexOf(element);
         activeShipList.splice(newSunkShip, 1);
       }
     });
+
+    if (activeShipList.length === 0) {
+      console.log("declaring winner");
+      return true;
+    }
   };
 
   const receiveAttack = (attackAttempt) => {
-    // console.log(attackAttempt)
-    // console.log(activeShipList[0].coordinates)
+
+    // previouslySelected.forEach(element => {
+    //   if (element.toString() === attackAttempt.toString())
+    //     {return console.log('nope')}
+    // });
 
     for (let i = 0; i < activeShipList.length; i++) {
       // console.log(activeShipList[i].coordinates);
@@ -152,14 +158,15 @@ const gameboard = () => {
       }
       activeShipList.push(shipName);
     }
-    return shipName;
+    return true;
+    // return shipName;
     // console.log(shipCoordinateList)
   };
 
   return {
     xAxis,
     yAxis,
-    missed,
+    previouslySelected,
     receiveAttack,
     placeShip,
     activeShipList,
@@ -171,6 +178,7 @@ const gameboard = () => {
 const botGameboard = gameboard();
 const player1Gameboard = gameboard();
 
+//Debug: ship data
 // const carrier = player1Gameboard.placeShip(5, 'carrier')
 // const battleship = player1Gameboard.placeShip(4, 'battleship')
 // const cruiser = player1Gameboard.placeShip(3, 'cruiser', 3, 'a', 'vertical')
@@ -183,70 +191,20 @@ const battleship = { shipObjectLength: 4, shipObjectName: "battleship" };
 const cruiser = { shipObjectLength: 3, shipObjectName: "cruiser" };
 const submarine = { shipObjectLength: 3, shipObjectName: "submarine" };
 const destroyer = { shipObjectLength: 2, shipObjectName: "destroyer" };
-const ssConflict = (3, "ssConflict");
+const ssConflict = (7, "ssConflict");
 
 const ships = [battleship, carrier, cruiser, destroyer, submarine];
 
 const referee = () => {
   if (player1Gameboard.gameOverCheck()) {
+    console.log("player loses" + player1Gameboard.activeShipList);
     return true;
   }
   if (botGameboard.gameOverCheck()) {
+    console.log("CPU loses" + botGameboard.activeShipList);
     return true;
   }
 };
-
-// const botFunction = () => {
-//   const botRandomChoiceX = () => {
-//     return Math.floor(Math.random() * 9);
-//   };
-
-//   const botRandomChoiceY = () => {
-//     return Math.floor(Math.random() * 9);
-//   };
-
-//   const botRandomOrientation = () => {
-//     if (Math.floor(Math.random() * 2) === 1) {
-//       return "horizonatal";
-//     } else if (Math.floor(Math.random() * 2) === 0) {
-//       return "vertical";
-//     } else {
-//       return "vertical";
-//     }
-//   };
-
-//   // const botChoice = (count) => {
-//   //     botGameboard.placeShip(
-//   //         ships[count].shipObjectLength,
-//   //         ships[count].shipObjectName,
-//   //         (botGameboard.xAxis[count]),
-//   //         (botGameboard.yAxis[count]),
-//   //         'vertical')
-//   // }
-
-//   const botChoice = (count) => {
-//     botGameboard.placeShip(
-//       ships[count].shipObjectLength,
-//       ships[count].shipObjectName,
-//       botGameboard.xAxis[count + 1],
-//       botGameboard.yAxis[count],
-//       "vertical"
-//     );
-//   };
-
-//   const botChoiceFunction = () => {
-//     for (let i = 0; i < 5; i++) {
-//       botChoice(i);
-//     }
-//   };
-//   botChoiceFunction();
-
-//   // if(botGameboard.activeShipList.length !== 5) {botChoiceFunction()}
-
-//   console.log(botGameboard.activeShipList);
-//   // console.log(botGameboard.shipCoordinateList)
-// };
-// botFunction();
 
 const botPlacementFunction = () => {
   const botAvailableAttacks = [];
@@ -278,13 +236,37 @@ const botPlacementFunction = () => {
     return botChoiceY;
   };
 
+  //function that actually places ships
   const botChoiceFunction = () => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < ships.length; i++) {
       botChoice(i);
     }
   };
 
+  //engine for calculating ship placements
   const botChoice = (count) => {
+    let xAxisPlacement = botRandomChoiceX();
+    let yAxisPlacement = botRandomChoiceY();
+    let botChoiceOrientation;
+
+    const randomPlacementRule = Math.floor(
+      Math.random() * (9 - ships[count].shipObjectLength)
+    );
+    // if (count % 2 == 1)
+    //   {botChoiceOrientation = 'horizontal'}
+    // else if (count % 2 == 0)
+    // {botChoiceOrientation = 'vertical'}
+
+    console.log(ships);
+    // botGameboard.placeShip(
+    //   ships[count].shipObjectLength,
+    //   ships[count].shipObjectName,
+    //   botGameboard.xAxis[count * 2],
+    //   botGameboard.yAxis[randomPlacementRule],
+    //   "vertical"
+    // );
+
+    //debug: places ships at specific locations
     botGameboard.placeShip(
       ships[count].shipObjectLength,
       ships[count].shipObjectName,
@@ -292,6 +274,9 @@ const botPlacementFunction = () => {
       botGameboard.yAxis[count],
       "vertical"
     );
+    console.log(botGameboard.activeShipList);
+
+    //potential rules: only vertical in spaces 4 - 7, horizontal in spaces 1-3 and 8-10
   };
 
   return {
@@ -307,4 +292,14 @@ const botPlacementFunction = () => {
 const botOperation = botPlacementFunction();
 botOperation.botChoiceFunction();
 
-// referee();
+const resetGame = () => {
+  console.log(botGameboard);
+  botGameboard.activeShipList.length = 0;
+  botGameboard.shipCoordinateList.length = 0;
+  player1Gameboard.activeShipList.length = 0;
+  player1Gameboard.shipCoordinateList.length = 0;
+
+  botOperation.botChoiceFunction();
+
+  console.log("Game reset");
+};
