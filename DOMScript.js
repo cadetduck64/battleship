@@ -1,5 +1,3 @@
-//program AI counterattack done
-//program random AI placement
 //clean up UI
 
 //Imports and Dependencies
@@ -9,8 +7,7 @@ import { ships } from "/index.js";
 import { referee } from "/index.js";
 import { botOperation } from "./index.js";
 import { resetGame } from "./index.js";
-
-// console.log(ships);
+import { isSunk } from "./index.js";
 
 //player used variables
 const messageBoard = document.querySelector("#messageBoard");
@@ -41,8 +38,6 @@ const DOMxAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const DOMyAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
 //player 1 functions
-////////////////////
-
 //creates div box for the xAxis and yAxis; not interactive
 const gameboardPlayer1Dom = () => {
   const renderxAxis = () => {
@@ -65,7 +60,7 @@ const gameboardPlayer1Dom = () => {
     }
   };
 
-  //loads the 100 squares to make up the interactive area
+  //loads UI elements for the player
   const renderPlayfield = () => {
     //highlights interactive tiles while hovering over them
     const previewEngine = (previewEngineLength) => {
@@ -93,6 +88,7 @@ const gameboardPlayer1Dom = () => {
           }
     };
 
+    //function for clearing squares when not hover over them
     const clearSquares = () => {
       let a = document.querySelectorAll(".battlefieldSquareHighlight");
       let b = document.querySelectorAll(".battlefieldSquareSelect");
@@ -105,35 +101,34 @@ const gameboardPlayer1Dom = () => {
       });
     };
 
+    //loads the 100 squares to make up the interactive area
     for (let i = 0; i < 100; i++) {
       const battlefieldSquare = document.createElement("div");
       battlefieldSquare.classList.add(`battlefieldSquare`);
       battlefieldSquare.setAttribute("id", i);
 
+      //activates the hover highlighing function
       battlefieldSquare.addEventListener("mouseover", () => {
         (mouseHoverVariable = battlefieldSquare),
           battlefieldSquare.classList.add("battlefieldSquareSelect"),
           previewEngine(currentShipLength);
       });
-
+      //clears highlighted square when leaving a box
       battlefieldSquare.addEventListener("mouseleave", () => {
         clearSquares();
       });
 
-      // battlefieldSquare.addEventListener('mouseover', () => {console.log(Number(mousePoint.id))})
+      //what happens when a player clicks on their own square
       battlefieldSquare.addEventListener("click", () => {
-        // console.log(player1Gameboard.activeShipList.length === ships.length)
+        //if the player has deployed all their ships, dont let them fire on them
+        //if they are not all deployed and theres no ship selected
+        //tell the player the pick a ship and place them all
         if (player1Gameboard.activeShipList.length === ships.length) {
-          return console.log("you cant fire on your own ships");
+          return (messageBoard.textContent =
+            "You cant fire on your own ships!");
         } else if (currentShipName === undefined) {
-          return (
-            console.log("Pick a ship first, Commander"),
-            (messageBoard.textContent = "Pick a ship first, Commander")
-          );
+          return (messageBoard.textContent = "Pick a ship first, Commander");
         }
-
-        // console.log(Number(mouseHoverVariable.id))
-        // mouseClickVariable = Number(mouseHoverVariable.id)
 
         //checks valid placement
         if (mouseHoverVariable.id[1] === undefined) {
@@ -157,12 +152,13 @@ const gameboardPlayer1Dom = () => {
             DOMorientation
           ) === undefined
         ) {
+          messageBoard.textContent =
+            "Units are interfering, deploy to a different spot, Commander";
           return;
         }
 
-        // fix bug where a line can clip to second row
         if (mouseHoverVariable.id[1] === undefined) {
-          console.log(mouseHoverVariable.id[1]);
+          // console.log(mouseHoverVariable.id[1]);
           // console.log(DOMxAxis[mouseHoverVariable.id[0]], DOMyAxis[0])
           player1Gameboard.placeShip(
             currentShipLength,
@@ -181,6 +177,7 @@ const gameboardPlayer1Dom = () => {
           );
         }
 
+        //reflects the ship placement on the players DOM board
         if (DOMorientation === "horizontal") {
           for (let i = 1; i < currentShipLength; i++)
             document
@@ -197,14 +194,15 @@ const gameboardPlayer1Dom = () => {
           mouseHoverVariable.classList.add("deployedShip");
         }
 
+        //removes the selected ship that was just placed
         const clear = document.querySelector("#shipSummaryHighlight");
         clear.remove();
         currentShipName = undefined;
         currentShipLength = undefined;
-
-        console.log(player1Gameboard.activeShipList);
+        // console.log(player1Gameboard.activeShipList);
       });
 
+      //changes the orientation of the ship preview and placement mode
       battlefieldSquare.addEventListener("contextmenu", (e) => {
         e.preventDefault();
         if (DOMorientation === "horizontal") {
@@ -218,38 +216,35 @@ const gameboardPlayer1Dom = () => {
         }
       });
 
-      battlefieldSquare.textContent = i;
+      //adds a number to a square, and appends the board to the main div
+      // battlefieldSquare.textContent = i;
       playField.appendChild(battlefieldSquare);
       playFieldContainer.appendChild(playField);
     }
   };
 
-  //placeShipDom used to be here
-
-  // placeShipDom();
+  //calls all the function to render the player field
   renderxAxis();
   renderyAxis();
   renderPlayfield();
-
-  // return {placeShipDom}
 };
 
 gameboardPlayer1Dom();
 
+//function that lets players select ships to place
 const placeShipDom = () => {
   const shipSummaryFactory = (length, shipName) => {
+    //takes the ships array, creates a selectable div thats used to place the ship on the board
     const shipSummary = document.createElement("div");
     shipSummary.textContent = shipName + " || length: " + length;
     shipSummary.classList.add("shipSummary");
     shipSummary.setAttribute("id", shipName);
 
-    // shipSummary.addEventListener('contextmenu', (e) => {e.preventDefault(), console.log('right')})
-
     shipSummary.addEventListener("click", () => {
       currentShipLength = length;
       currentShipName = shipName;
-      console.log("currentShipLength " + currentShipLength);
-      console.log("currentShipName " + currentShipName);
+      // console.log("currentShipLength " + currentShipLength);
+      // console.log("currentShipName " + currentShipName);
 
       const removehightlight = document.getElementById("shipSummaryHighlight");
       if (removehightlight != undefined || removehightlight != null) {
@@ -264,16 +259,13 @@ const placeShipDom = () => {
   ships.forEach((element) => {
     shipSummaryFactory(element.shipObjectLength, element.shipObjectName);
   });
-  // const cruiserSummary = shipSummaryFactory(3, 'cruiser')
-  // const battleshipSummary = shipSummaryFactory(4, 'battleship')
-  // const carrier = shipSummaryFactory(5, 'carrier')
 };
 
 placeShipDom();
 
 //renders CPU/player 2 gameboard
-
 const DOMbotGameboard = () => {
+  //easy to access, in function axis references
   const botDOMxAxis = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const botDOMyAxis = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
@@ -283,7 +275,6 @@ const DOMbotGameboard = () => {
       botxAxisSquare.classList.add("botxAxisSquare");
       botxAxisSquare.textContent = botDOMxAxis[i];
       botxAxisDiv.appendChild(botxAxisSquare);
-      // botplayfieldcontainer.appendChild(botxAxisDiv)
     }
   };
 
@@ -293,15 +284,13 @@ const DOMbotGameboard = () => {
       botyAxisSquare.classList.add("botyAxisSquare");
       botyAxisSquare.textContent = botDOMyAxis[i];
       botyAxisDiv.appendChild(botyAxisSquare);
-      // botplayfieldcontainer.appendChild(botyAxisDiv)
     }
   };
 
   const botrenderplayField = () => {
+    //shows a single square where the player is hovering
     const previewEngine = (previewEngineLength) => {
-      // const previewEngineSquare = document.getElementById(mouseClickVariable+previewEngineLength)
       if (DOMorientation === "horizontal") {
-        // console.log((Number(mouseHoverVariable.id) + previewEngineLength - 1))
         for (let i = 1; i < previewEngineLength; i++) {
           document
             .getElementById(
@@ -323,6 +312,7 @@ const DOMbotGameboard = () => {
           }
     };
 
+    //clears square color when leaving
     const botclearSquares = () => {
       let a = document.querySelectorAll(".botbattlefieldSquareHighlight");
       let b = document.querySelectorAll(".botbattlefieldSquareSelect");
@@ -335,6 +325,7 @@ const DOMbotGameboard = () => {
       });
     };
 
+    //creates the interactive bot squares
     for (let i = 0; i < 100; i++) {
       const botbattlefieldSquare = document.createElement("div");
       botbattlefieldSquare.classList.add(`botbattlefieldSquare`);
@@ -346,6 +337,7 @@ const DOMbotGameboard = () => {
           previewEngine(currentShipLength);
       });
 
+      //calls the function that clears squares when leaving
       botbattlefieldSquare.addEventListener("mouseleave", () => {
         let a = document.querySelectorAll(".battlefieldSquareHighlight");
         let b = document.querySelectorAll(".battlefieldSquareSelect");
@@ -361,31 +353,42 @@ const DOMbotGameboard = () => {
 
       botbattlefieldSquare.addEventListener("click", () => {
         //DEBUG: uncomment this to prevent bot from not attacking
-        if (
-          document.querySelector('#shipListDiv').children.length > 0
-        ) {
+        //checks if the plaer has placed all availabe ships
+        if (document.querySelector("#shipListDiv").children.length > 0) {
           return console.log(
             "Place all ships before launching attacks, Commander",
-            messageBoard.textContent = "Place all ships before launching attacks, Commander"
+            (messageBoard.textContent =
+              "Place all ships before launching attacks, Commander")
           );
         }
 
+        //varibale corresponding to the desired coordinate eg. [1, 'a']
         let playerAttackAttempt = [
           botDOMxAxis[mouseHoverVariable.id[1]],
           botDOMyAxis[mouseHoverVariable.id[0]],
         ];
 
         //checks to see if the space has already been interacted with and if so, stops the function
-        if (botbattlefieldSquare.classList.contains('botbattlefieldSquareMissedShip') ||
-        botbattlefieldSquare.classList.contains('botbattlefieldSquareHitShip')
-      ) {
-          messageBoard.textContent = 'space already hit'
-          console.log('space already hit')
+        if (
+          botbattlefieldSquare.classList.contains(
+            "botbattlefieldSquareMissedShip"
+          ) ||
+          botbattlefieldSquare.classList.contains("botbattlefieldSquareHitShip")
+        ) {
+          messageBoard.textContent =
+            "Those coordinates have been fired at already, we have to fire somewhere else";
+          console.log("space already hit");
           return;
         }
 
-        //checks to see if game is over
-        if (referee() === true) {
+        //checks to see if game is over, if so, stop the function
+        if (referee() === "botwin") {
+          messageBoard.textContent =
+            "Naval Command says we have taken too many losses, we must retreat";
+          return;
+        } else if (referee() === "playerwin") {
+          messageBoard.textContent =
+            "Another successful operation, Commander, lets prepare for the next one";
           return;
         }
 
@@ -403,27 +406,25 @@ const DOMbotGameboard = () => {
           ];
         }
 
-        // console.log(botOperation.botAvailableAttacks.length);
-        // console.log(botAttackAttempt);
-        // console.log(botOperation.botAvailableAttacks);
-
-
-
         //formatting so player attacks responds to first column
         if (playerAttackAttempt[0] === undefined) {
           playerAttackAttempt = [botDOMxAxis[mouseHoverVariable.id[0]], "a"];
         }
-
-        //if the player hits a bot square, reflect it in the DOM
+        //if the player hits or misses a bot square, reflect it in the DOM,
         if (botGameboard.receiveAttack(playerAttackAttempt) === true) {
           mouseHoverVariable.classList.add("botbattlefieldSquareHitShip");
-        } else {
+          messageBoard.textContent = "We hit a ship, great work Commander";
+        }
+        // else if () {}
+        else {
           {
             mouseHoverVariable.classList.add("botbattlefieldSquareMissedShip");
+            messageBoard.textContent =
+              "No targets hit Commander, lets aim somewhere else";
           }
         }
 
-        //format code so the bot can properly hit things in the first column
+        //format code so the bot can properly hit targets in the first column
         let botAttackParameter =
           `${botDOMyAxis.indexOf(botAttackAttempt[1])}` +
           `${botDOMxAxis.indexOf(botAttackAttempt[0])}`;
@@ -433,11 +434,6 @@ const DOMbotGameboard = () => {
           botAttackParameter =
             `${botDOMyAxis.indexOf(botAttackAttempt[0])}` + `0`;
         }
-
-        // console.log(botAttackParameter);
-        // console.log(document.getElementById(botAttackParameter));
-        // console.log(player1Gameboard.activeShipList)
-        // console.log(botGameboard.activeShipList)
 
         //if the bot hits a player square, reflect it in the DOM by turning square red
         if (player1Gameboard.receiveAttack(botAttackAttempt) === true) {
@@ -460,7 +456,8 @@ const DOMbotGameboard = () => {
         e.preventDefault();
       });
 
-      botbattlefieldSquare.textContent = i;
+      //adds unique number to all squares and appends to the DOM
+      // botbattlefieldSquare.textContent = i;
       botplayField.appendChild(botbattlefieldSquare);
     }
   };
@@ -471,8 +468,22 @@ const DOMbotGameboard = () => {
 
 DOMbotGameboard();
 
+//function that resets game data and game state
+let confirm = 0; // confirmation variable
 resetButton.addEventListener("click", () => {
-  resetGame();
+  //adds to the confirmation variable counter, and text confirms restart
+  confirm++;
+  if (confirm === 1) {
+    resetGame((resetButton.textContent = "Are you sure?"));
+    console.log(confirm);
+    //if nothing happens after 3 seconds set counter to 0 and default text
+    setTimeout(() => {
+      confirm = 0;
+      resetButton.textContent = "Reset Game";
+    }, 3000);
+    return;
+  }
+
   //resets board squares and player description
   const shipSummaries = document.querySelectorAll(".shipSummary");
   for (let index = 0; index < shipSummaries.length; index++) {
@@ -494,25 +505,18 @@ resetButton.addEventListener("click", () => {
     placedShips[i].classList.remove("deployedShip");
   }
 
+  //replaces list of selectable ships
   placeShipDom();
+
+  messageBoard.textContent =
+    "Welcome back Commander, we have an operation. Deploy your units by clicking the ship name and clicking the deployment coordinates";
+
+  resetButton.textContent = "Reset Game";
+
+  confirm = 0;
 });
-
-// console.log(botGameboard)
-// console.log((botGameboard.activeShipList[0], [2, 'a']))
-
-// //function that finds coordinates corresponding to ship hit
-// for (let i = 0; i < botGameboard.activeShipList.length; i++)
-// {
-//     let shipCheck = botGameboard.activeShipList[i]
-//     for (let i = 0; i < shipCheck.coordinates.length; i++)
-//     {if (shipCheck.coordinates[i].includes(2, 'a')) {console.log(shipCheck.shipName)}}
-// }
 
 //algorithm for finding coordinates: using the index of Y and X to find the corresponding class for the grid
 //  Example: if you want to hit g, 7
 // y[6] = G; x[6] = 7
 // this would correspond to the 67th tile
-
-// shipCheck.coordinates.forEach(element => {
-//     if (element.includes(2, 'a')) {return console.log(shipCheck.shipName)}
-// })

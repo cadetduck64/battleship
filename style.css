@@ -10,11 +10,21 @@
 
 /* Player Style */
 .battlefieldSquare {
-  background-color: white;
+  background-color: deepskyblue;
   width: 40px;
   height: 40px;
   border: solid black;
   align-content: center;
+}
+.playField {
+  /* border: solid black; */
+  display: grid;
+  grid-template-rows: repeat(10, 40px);
+  grid-template-columns: repeat(10, 40px);
+  flex-wrap: wrap;
+  flex-direction: row;
+  color: deepskyblue;
+  grid-area: playField;
 }
 
 #xAxisDiv {
@@ -24,9 +34,12 @@
 }
 
 .xAxisSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
-  color: red;
+  background-color: sandybrown;
   border: solid black;
 }
 
@@ -38,25 +51,21 @@
 }
 
 .yAxisSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
-  color: red;
+  background-color: sandybrown;
   border: solid black;
-}
-
-.playField {
-  /* border: solid black; */
-  display: grid;
-  grid-template-rows: repeat(10, 40px);
-  grid-template-columns: repeat(10, 40px);
-  flex-wrap: wrap;
-  flex-direction: row;
-  color: aqua;
-  grid-area: playField;
 }
 
 .shipList {
   border: solid black;
+}
+
+#playerMenu {
+  width: 450px;
 }
 
 #playFieldContainer {
@@ -78,7 +87,7 @@
 }
 
 #shipSummaryHighlight {
-  background-color: purple;
+  background-color: green;
 }
 
 .battlefieldSquareSelect {
@@ -86,7 +95,7 @@
 }
 
 .battlefieldSquareHighlight {
-  background-color: blue;
+  background-color: green;
 }
 
 #playerContainer {
@@ -103,7 +112,7 @@
 }
 
 .deployedShip {
-  background-color: purple;
+  background-color: silver;
 }
 
 /* Bot Style */
@@ -114,7 +123,7 @@
 }
 
 .botbattlefieldSquare {
-  background-color: white;
+  background-color: deepskyblue;
   width: 40px;
   height: 40px;
   border: solid black;
@@ -128,9 +137,12 @@
 }
 
 .botxAxisSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: sandybrown;
   width: 40px;
   height: 40px;
-  color: red;
   border: solid black;
 }
 
@@ -142,9 +154,19 @@
 }
 
 .botyAxisSquare {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: sandybrown;
   width: 40px;
   height: 40px;
-  color: red;
+  border: solid black;
+}
+
+#corner {
+  width: 40px;
+  height: 40px;
+  background-color: sandybrown;
   border: solid black;
 }
 
@@ -203,6 +225,7 @@
 }
 
 #botContainer {
+  margin-right: 100px;
   width: 400px;
 }
 
